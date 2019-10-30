@@ -2,6 +2,7 @@ import logging
 import numpy as np
 from typing import Any, Dict, Optional
 import tensorflow as tf
+import math
 
 from mlagents.envs.timers import timed
 from mlagents.envs.brain import BrainInfo, BrainParameters
@@ -168,6 +169,15 @@ class PPOPolicy(TFPolicy):
         run_out = self._execute_model(feed_dict, self.inference_dict)
         if self.use_continuous_act:
             run_out["random_normal_epsilon"] = epsilon
+        probs = []
+        for p in run_out['log_probs']:
+            exponents = [math.e ** x for x in p]
+            probs.append(exponents / sum(exponents))
+        p2 = []
+        for i in range(len(run_out['action'])):
+            for j in range(len(run_out['action'][i])):
+                p2.append((run_out['action'][i][j], probs[i][run_out['action'][i][j]]))
+        print(p2)
         return run_out
 
     @timed
