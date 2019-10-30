@@ -1,4 +1,6 @@
 using UnityEngine;
+using Barracuda;
+using MLAgents.InferenceBrain;
 using System;
 
 namespace MLAgents
@@ -11,8 +13,8 @@ namespace MLAgents
     /// </summary>
     public class HeuristicPolicy : IPolicy
     {
-        Func<float[]> m_Heuristic;
-        Agent m_Agent;
+        private Func<float[]> m_Heuristic;
+        private Agent m_Agent;
 
         /// <inheritdoc />
         public HeuristicPolicy(Func<float[]> heuristic)

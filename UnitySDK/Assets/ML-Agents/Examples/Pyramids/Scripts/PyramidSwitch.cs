@@ -5,17 +5,17 @@ public class PyramidSwitch : MonoBehaviour
     public Material onMaterial;
     public Material offMaterial;
     public GameObject myButton;
-    bool m_State;
-    GameObject m_Area;
-    PyramidArea m_AreaComponent;
-    int m_PyramidIndex;
+    private bool m_State;
+    private GameObject m_Area;
+    private PyramidArea m_AreaComponent;
+    private int m_PyramidIndex;
 
     public bool GetState()
     {
         return m_State;
     }
 
-    void Start()
+    private void Start()
     {
         m_Area = gameObject.transform.parent.gameObject;
         m_AreaComponent = m_Area.GetComponent<PyramidArea>();
@@ -31,7 +31,7 @@ public class PyramidSwitch : MonoBehaviour
         myButton.GetComponent<Renderer>().material = offMaterial;
     }
 
-    void OnCollisionEnter(Collision other)
+    private void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.CompareTag("agent") && m_State == false)
         {

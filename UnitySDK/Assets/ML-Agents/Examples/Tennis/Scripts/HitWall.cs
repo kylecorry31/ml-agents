@@ -5,9 +5,9 @@ public class HitWall : MonoBehaviour
     public GameObject areaObject;
     public int lastAgentHit;
 
-    TennisArea m_Area;
-    TennisAgent m_AgentA;
-    TennisAgent m_AgentB;
+    private TennisArea m_Area;
+    private TennisAgent m_AgentA;
+    private TennisAgent m_AgentB;
 
     // Use this for initialization
     void Start()
@@ -17,7 +17,7 @@ public class HitWall : MonoBehaviour
         m_AgentB = m_Area.agentB.GetComponent<TennisAgent>();
     }
 
-    void OnTriggerExit(Collider other)
+    private void OnTriggerExit(Collider other)
     {
         if (other.name == "over")
         {
@@ -33,7 +33,7 @@ public class HitWall : MonoBehaviour
         }
     }
 
-    void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("iWall"))
         {

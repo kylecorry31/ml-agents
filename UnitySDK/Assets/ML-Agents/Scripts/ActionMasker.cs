@@ -8,11 +8,11 @@ namespace MLAgents
     {
         /// When using discrete control, is the starting indices of the actions
         /// when all the branches are concatenated with each other.
-        int[] m_StartingActionIndices;
+        private int[] m_StartingActionIndices;
 
-        bool[] m_CurrentMask;
+        private bool[] m_CurrentMask;
 
-        readonly BrainParameters m_BrainParameters;
+        private readonly BrainParameters m_BrainParameters;
 
         public ActionMasker(BrainParameters brainParameters)
         {
@@ -79,7 +79,7 @@ namespace MLAgents
         /// <summary>
         /// Makes sure that the current mask is usable.
         /// </summary>
-        void AssertMask()
+        private void AssertMask()
         {
             // Action Masks can only be used in Discrete Control.
             if (m_BrainParameters.vectorActionSpaceType != SpaceType.Discrete)
@@ -116,7 +116,7 @@ namespace MLAgents
         /// </summary>
         /// <param name="branch"> The index of the branch to check</param>
         /// <returns> True if all the actions of the branch are masked</returns>
-        bool AreAllActionsMasked(int branch)
+        private bool AreAllActionsMasked(int branch)
         {
             if (m_CurrentMask == null)
             {

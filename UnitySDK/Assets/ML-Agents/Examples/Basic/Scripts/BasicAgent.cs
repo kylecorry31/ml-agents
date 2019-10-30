@@ -4,9 +4,9 @@ using MLAgents;
 public class BasicAgent : Agent
 {
     [Header("Specific to Basic")]
-    BasicAcademy m_Academy;
+    private BasicAcademy m_Academy;
     public float timeBetweenDecisionsAtInference;
-    float m_TimeSinceDecision;
+    private float m_TimeSinceDecision;
     int m_Position;
     int m_SmallGoalPosition;
     int m_LargeGoalPosition;
@@ -95,7 +95,7 @@ public class BasicAgent : Agent
         WaitTimeInference();
     }
 
-    void WaitTimeInference()
+    private void WaitTimeInference()
     {
         if (!m_Academy.GetIsInference())
         {

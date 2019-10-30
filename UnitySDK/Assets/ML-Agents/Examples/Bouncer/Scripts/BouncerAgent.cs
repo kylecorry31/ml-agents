@@ -72,7 +72,7 @@ public class BouncerAgent : Agent
     {
     }
 
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         if (Physics.Raycast(transform.position, new Vector3(0f, -1f, 0f), 0.51f) && m_JumpCooldown <= 0f)
         {
@@ -114,7 +114,7 @@ public class BouncerAgent : Agent
         return action;
     }
 
-    void Update()
+    private void Update()
     {
         if (m_LookDir.magnitude > float.Epsilon)
         {

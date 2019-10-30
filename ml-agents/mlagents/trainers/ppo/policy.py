@@ -156,7 +156,9 @@ class PPOPolicy(TFPolicy):
                 ] = brain_info.previous_vector_actions.reshape(
                     [-1, len(self.model.act_size)]
                 )
-            feed_dict[self.model.memory_in] = self.retrieve_memories(brain_info.agents)
+            if brain_info.memories.shape[1] == 0:
+                brain_info.memories = self.make_empty_memory(len(brain_info.agents))
+            feed_dict[self.model.memory_in] = brain_info.memories
         if self.use_continuous_act:
             epsilon = np.random.normal(
                 size=(len(brain_info.vector_observations), self.model.act_size[0])
@@ -251,7 +253,9 @@ class PPOPolicy(TFPolicy):
         if self.use_vec_obs:
             feed_dict[self.model.vector_in] = [brain_info.vector_observations[idx]]
         if self.use_recurrent:
-            feed_dict[self.model.memory_in] = self.retrieve_memories([idx])
+            if brain_info.memories.shape[1] == 0:
+                brain_info.memories = self.make_empty_memory(len(brain_info.agents))
+            feed_dict[self.model.memory_in] = [brain_info.memories[idx]]
         if not self.use_continuous_act and self.use_recurrent:
             feed_dict[self.model.prev_action] = [
                 brain_info.previous_vector_actions[idx]

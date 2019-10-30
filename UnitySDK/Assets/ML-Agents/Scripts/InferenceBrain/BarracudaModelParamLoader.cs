@@ -11,14 +11,13 @@ namespace MLAgents.InferenceBrain
     /// </summary>
     public class BarracudaModelParamLoader
     {
-        enum ModelActionType
+        private enum ModelActionType
         {
             Unknown,
             Discrete,
             Continuous
         }
-
-        const long k_ApiVersion = 2;
+        private const long k_ApiVersion = 2;
 
         /// <summary>
         /// Generates the Tensor inputs that are expected to be present in the Model.
@@ -166,7 +165,7 @@ namespace MLAgents.InferenceBrain
         /// The integer value in the model indicating the type of control
         /// </param>
         /// <returns>The equivalent ModelActionType</returns>
-        static ModelActionType GetActionType(int isContinuousInt)
+        private static ModelActionType GetActionType(int isContinuousInt)
         {
             ModelActionType isContinuous;
             switch (isContinuousInt)
@@ -190,7 +189,7 @@ namespace MLAgents.InferenceBrain
         /// </summary>
         /// <param name="requiredScalarFields"> Mapping from node names to int values</param>
         /// <returns>The list the error messages of the checks that failed</returns>
-        static IEnumerable<string> CheckIntScalarPresenceHelper(
+        private static IEnumerable<string> CheckIntScalarPresenceHelper(
             Dictionary<string, int> requiredScalarFields)
         {
             var failedModelChecks = new List<string>();
@@ -223,7 +222,7 @@ namespace MLAgents.InferenceBrain
         /// <returns>
         /// A IEnumerable of string corresponding to the failed input presence checks.
         /// </returns>
-        static IEnumerable<string> CheckInputTensorPresence(
+        private static IEnumerable<string> CheckInputTensorPresence(
             Model model,
             BrainParameters brainParameters,
             int memory,
@@ -277,7 +276,7 @@ namespace MLAgents.InferenceBrain
         /// <returns>
         /// A IEnumerable of string corresponding to the failed output presence checks.
         /// </returns>
-        static IEnumerable<string> CheckOutputTensorPresence(Model model, int memory)
+        private static IEnumerable<string> CheckOutputTensorPresence(Model model, int memory)
         {
             var failedModelChecks = new List<string>();
             // If there is no Action Output.
@@ -312,7 +311,7 @@ namespace MLAgents.InferenceBrain
         /// The BrainParameters that are used verify the compatibility with the InferenceEngine
         /// </param>
         /// <returns>The list the error messages of the checks that failed</returns>
-        static IEnumerable<string> CheckInputTensorShape(
+        private static IEnumerable<string> CheckInputTensorShape(
             Model model, BrainParameters brainParameters)
         {
             var failedModelChecks = new List<string>();
@@ -370,7 +369,7 @@ namespace MLAgents.InferenceBrain
         /// If the Check failed, returns a string containing information about why the
         /// check failed. If the check passed, returns null.
         /// </returns>
-        static string CheckVectorObsShape(
+        private static string CheckVectorObsShape(
             BrainParameters brainParameters, TensorProxy tensorProxy)
         {
             var vecObsSizeBp = brainParameters.vectorObservationSize;
@@ -394,7 +393,7 @@ namespace MLAgents.InferenceBrain
         /// <param name="tensorProxy"> The tensor that is expected by the model</param>
         /// <returns>If the Check failed, returns a string containing information about why the
         /// check failed. If the check passed, returns null.</returns>
-        static string CheckPreviousActionShape(
+        private static string CheckPreviousActionShape(
             BrainParameters brainParameters, TensorProxy tensorProxy)
         {
             var numberActionsBp = brainParameters.vectorActionSize.Length;
@@ -427,7 +426,7 @@ namespace MLAgents.InferenceBrain
         /// A IEnumerable of string corresponding to the incompatible shapes between model
         /// and BrainParameters.
         /// </returns>
-        static IEnumerable<string> CheckOutputTensorShape(
+        private static IEnumerable<string> CheckOutputTensorShape(
             Model model,
             BrainParameters brainParameters,
             ModelActionType isContinuous,
@@ -495,7 +494,7 @@ namespace MLAgents.InferenceBrain
         /// If the Check failed, returns a string containing information about why the
         /// check failed. If the check passed, returns null.
         /// </returns>
-        static string CheckDiscreteActionOutputShape(
+        private static string CheckDiscreteActionOutputShape(
             BrainParameters brainParameters, TensorShape shape, int modelActionSize)
         {
             var bpActionSize = brainParameters.vectorActionSize.Sum();
@@ -520,7 +519,7 @@ namespace MLAgents.InferenceBrain
         /// </param>
         /// <returns>If the Check failed, returns a string containing information about why the
         /// check failed. If the check passed, returns null.</returns>
-        static string CheckContinuousActionOutputShape(
+        private static string CheckContinuousActionOutputShape(
             BrainParameters brainParameters, TensorShape shape, int modelActionSize)
         {
             var bpActionSize = brainParameters.vectorActionSize[0];

@@ -5,7 +5,7 @@ public class TennisArea : MonoBehaviour
     public GameObject ball;
     public GameObject agentA;
     public GameObject agentB;
-    Rigidbody m_BallRb;
+    private Rigidbody m_BallRb;
 
     // Use this for initialization
     void Start()

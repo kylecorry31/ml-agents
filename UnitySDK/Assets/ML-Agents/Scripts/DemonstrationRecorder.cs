@@ -11,12 +11,12 @@ namespace MLAgents
     {
         public bool record;
         public string demonstrationName;
-        Agent m_RecordingAgent;
-        string m_FilePath;
-        DemonstrationStore m_DemoStore;
+        private Agent m_RecordingAgent;
+        private string m_FilePath;
+        private DemonstrationStore m_DemoStore;
         public const int MaxNameLength = 16;
 
-        void Start()
+        private void Start()
         {
             if (Application.isEditor && record)
             {
@@ -24,7 +24,7 @@ namespace MLAgents
             }
         }
 
-        void Update()
+        private void Update()
         {
             if (Application.isEditor && record && m_DemoStore == null)
             {
@@ -35,7 +35,7 @@ namespace MLAgents
         /// <summary>
         /// Creates demonstration store for use in recording.
         /// </summary>
-        void InitializeDemoStore()
+        private void InitializeDemoStore()
         {
             m_RecordingAgent = GetComponent<Agent>();
             m_DemoStore = new DemonstrationStore();
@@ -74,7 +74,7 @@ namespace MLAgents
         /// <summary>
         /// Closes Demonstration store.
         /// </summary>
-        void OnApplicationQuit()
+        private void OnApplicationQuit()
         {
             if (Application.isEditor && record && m_DemoStore != null)
             {

@@ -6,12 +6,12 @@ using UnityEngine.Serialization;
 
 public class GridAgent : Agent
 {
-    Academy m_Academy;
+    private Academy m_Academy;
     [FormerlySerializedAs("m_Area")]
     [Header("Specific to GridWorld")]
     public GridArea area;
     public float timeBetweenDecisionsAtInference;
-    float m_TimeSinceDecision;
+    private float m_TimeSinceDecision;
 
     [Tooltip("Because we want an observation right before making a decision, we can force " +
         "a camera to render before making a decision. Place the agentCam here if using " +
@@ -22,11 +22,11 @@ public class GridAgent : Agent
         "masking turned on may not behave optimally when action masking is turned off.")]
     public bool maskActions = true;
 
-    const int k_NoAction = 0;  // do nothing!
-    const int k_Up = 1;
-    const int k_Down = 2;
-    const int k_Left = 3;
-    const int k_Right = 4;
+    private const int k_NoAction = 0;  // do nothing!
+    private const int k_Up = 1;
+    private const int k_Down = 2;
+    private const int k_Left = 3;
+    private const int k_Right = 4;
 
     public override void InitializeAgent()
     {
@@ -48,7 +48,7 @@ public class GridAgent : Agent
     /// <summary>
     /// Applies the mask for the agents action to disallow unnecessary actions.
     /// </summary>
-    void SetMask()
+    private void SetMask()
     {
         // Prevents the agent from picking an action that would make it collide with a wall
         var positionX = (int)transform.position.x;
@@ -155,7 +155,7 @@ public class GridAgent : Agent
         WaitTimeInference();
     }
 
-    void WaitTimeInference()
+    private void WaitTimeInference()
     {
         if (renderCamera != null)
         {

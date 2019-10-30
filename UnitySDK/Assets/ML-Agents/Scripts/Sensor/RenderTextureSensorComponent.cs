@@ -9,7 +9,7 @@ namespace MLAgents.Sensor
         public string sensorName = "RenderTextureSensor";
         public int width = 84;
         public int height = 84;
-        public bool grayscale;
+        public bool grayscale = false;
 
         public override ISensor CreateSensor()
         {

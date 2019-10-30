@@ -27,11 +27,11 @@ public class WalkerAgent : Agent
     bool m_IsNewDecisionStep;
     int m_CurrentDecisionStep;
 
-    Rigidbody m_HipsRb;
-    Rigidbody m_ChestRb;
-    Rigidbody m_SpineRb;
+    private Rigidbody m_HipsRb;
+    private Rigidbody m_ChestRb;
+    private Rigidbody m_SpineRb;
 
-    ResetParameters m_ResetParams;
+    private ResetParameters m_ResetParams;
 
     public override void InitializeAgent()
     {

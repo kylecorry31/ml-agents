@@ -21,7 +21,7 @@ namespace MLAgents.InferenceBrain
             FloatingPoint
         };
 
-        static readonly Dictionary<TensorType, Type> k_TypeMap =
+        private static readonly Dictionary<TensorType, Type> k_TypeMap =
             new Dictionary<TensorType, Type>()
         {
             {TensorType.FloatingPoint, typeof(float)},

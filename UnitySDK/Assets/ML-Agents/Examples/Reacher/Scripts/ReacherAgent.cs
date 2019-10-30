@@ -7,18 +7,18 @@ public class ReacherAgent : Agent
     public GameObject pendulumB;
     public GameObject hand;
     public GameObject goal;
-    ReacherAcademy m_MyAcademy;
+    private ReacherAcademy m_MyAcademy;
     float m_GoalDegree;
-    Rigidbody m_RbA;
-    Rigidbody m_RbB;
+    private Rigidbody m_RbA;
+    private Rigidbody m_RbB;
     // speed of the goal zone around the arm (in radians)
-    float m_GoalSpeed;
+    private float m_GoalSpeed;
     // radius of the goal zone
-    float m_GoalSize;
+    private float m_GoalSize;
     // Magnitude of sinusoidal (cosine) deviation of the goal along the vertical dimension
-    float m_Deviation;
+    private float m_Deviation;
     // Frequency of the cosine deviation of the goal along the vertical dimension
-    float m_DeviationFreq;
+    private float m_DeviationFreq;
 
     /// <summary>
     /// Collect the rigidbodies of the reacher in order to resue them for

@@ -59,7 +59,9 @@ class BCPolicy(TFPolicy):
 
         feed_dict = self.fill_eval_dict(feed_dict, brain_info)
         if self.use_recurrent:
-            feed_dict[self.model.memory_in] = self.retrieve_memories(brain_info.agents)
+            if brain_info.memories.shape[1] == 0:
+                brain_info.memories = self.make_empty_memory(len(brain_info.agents))
+            feed_dict[self.model.memory_in] = brain_info.memories
         run_out = self._execute_model(feed_dict, self.inference_dict)
         return run_out
 

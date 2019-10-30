@@ -10,7 +10,7 @@ namespace MLAgents.InferenceBrain.Utils
     /// </summary>
     public class Multinomial
     {
-        readonly System.Random m_Random;
+        private readonly System.Random m_Random;
 
         /// <summary>
         /// Constructor.

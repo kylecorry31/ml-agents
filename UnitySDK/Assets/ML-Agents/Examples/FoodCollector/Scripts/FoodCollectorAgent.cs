@@ -3,7 +3,7 @@ using MLAgents;
 
 public class FoodCollectorAgent : Agent
 {
-    FoodCollectorAcademy m_MyAcademy;
+    private FoodCollectorAcademy m_MyAcademy;
     public GameObject area;
     FoodCollectorArea m_MyArea;
     bool m_Frozen;
@@ -13,7 +13,7 @@ public class FoodCollectorAgent : Agent
     float m_FrozenTime;
     float m_EffectTime;
     Rigidbody m_AgentRb;
-    float m_LaserLength;
+    private float m_LaserLength;
     // Speed of agent rotation.
     public float turnSpeed = 300;
 
@@ -25,7 +25,7 @@ public class FoodCollectorAgent : Agent
     public Material frozenMaterial;
     public GameObject myLaser;
     public bool contribute;
-    RayPerception3D m_RayPer;
+    private RayPerception3D m_RayPer;
     public bool useVectorObs;
 
 
@@ -48,7 +48,7 @@ public class FoodCollectorAgent : Agent
             const float rayDistance = 50f;
             float[] rayAngles = { 20f, 90f, 160f, 45f, 135f, 70f, 110f };
             string[] detectableObjects = { "food", "agent", "wall", "badFood", "frozenAgent" };
-            AddVectorObs(m_RayPer.Perceive(rayDistance, rayAngles, detectableObjects));
+            AddVectorObs(m_RayPer.Perceive(rayDistance, rayAngles, detectableObjects, 0f, 0f));
             var localVelocity = transform.InverseTransformDirection(m_AgentRb.velocity);
             AddVectorObs(localVelocity.x);
             AddVectorObs(localVelocity.z);

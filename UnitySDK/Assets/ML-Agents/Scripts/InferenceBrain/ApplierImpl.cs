@@ -36,9 +36,9 @@ namespace MLAgents.InferenceBrain
     /// </summary>
     public class DiscreteActionOutputApplier : TensorApplier.IApplier
     {
-        readonly int[] m_ActionSize;
-        readonly Multinomial m_Multinomial;
-        readonly ITensorAllocator m_Allocator;
+        private readonly int[] m_ActionSize;
+        private readonly Multinomial m_Multinomial;
+        private readonly ITensorAllocator m_Allocator;
 
         public DiscreteActionOutputApplier(int[] actionSize, int seed, ITensorAllocator allocator)
         {
@@ -60,7 +60,7 @@ namespace MLAgents.InferenceBrain
                 var actionProbs = new TensorProxy()
                 {
                     valueType = TensorProxy.TensorType.FloatingPoint,
-                    shape = new long[] { batchSize, nBranchAction },
+                    shape = new long[] {batchSize, nBranchAction},
                     data = m_Allocator.Alloc(new TensorShape(batchSize, nBranchAction))
                 };
 
@@ -78,7 +78,7 @@ namespace MLAgents.InferenceBrain
                 var outputTensor = new TensorProxy()
                 {
                     valueType = TensorProxy.TensorType.FloatingPoint,
-                    shape = new long[] { batchSize, 1 },
+                    shape = new long[] {batchSize, 1},
                     data = m_Allocator.Alloc(new TensorShape(batchSize, 1))
                 };
 
@@ -171,19 +171,13 @@ namespace MLAgents.InferenceBrain
 
     public class BarracudaMemoryOutputApplier : TensorApplier.IApplier
     {
-        readonly int m_MemoriesCount;
-        readonly int m_MemoryIndex;
+        private readonly int m_MemoriesCount;
+        private readonly int m_MemoryIndex;
 
-        Dictionary<int, List<float>> m_Memories;
-
-        public BarracudaMemoryOutputApplier(
-            int memoriesCount,
-            int memoryIndex,
-            Dictionary<int, List<float>> memories)
+        public BarracudaMemoryOutputApplier(int memoriesCount, int memoryIndex)
         {
             m_MemoriesCount = memoriesCount;
             m_MemoryIndex = memoryIndex;
-            m_Memories = memories;
         }
 
         public void Apply(TensorProxy tensorProxy, IEnumerable<Agent> agents)
@@ -193,9 +187,9 @@ namespace MLAgents.InferenceBrain
 
             foreach (var agent in agents)
             {
-                List<float> memory = null;
-                if (!m_Memories.TryGetValue(agent.Info.id, out memory)
-                    || memory.Count < memorySize * m_MemoriesCount)
+                var memory = agent.GetMemoriesAction();
+
+                if (memory == null || memory.Count < memorySize * m_MemoriesCount)
                 {
                     memory = new List<float>();
                     memory.AddRange(Enumerable.Repeat(0f, memorySize * m_MemoriesCount));
@@ -206,12 +200,36 @@ namespace MLAgents.InferenceBrain
                     memory[memorySize * m_MemoryIndex + j] = tensorProxy.data[agentIndex, j];
                 }
 
-                m_Memories[agent.Info.id] = memory;
+                agent.UpdateMemoriesAction(memory);
+
                 agentIndex++;
             }
         }
     }
 
+    /// <summary>
+    /// The Applier for the Memory output tensor. Tensor is assumed to contain the new
+    /// memory data of the agents in the batch.
+    /// </summary>
+    public class MemoryOutputApplier : TensorApplier.IApplier
+    {
+        public void Apply(TensorProxy tensorProxy, IEnumerable<Agent> agents)
+        {
+            var agentIndex = 0;
+            var memorySize = tensorProxy.shape[tensorProxy.shape.Length - 1];
+            foreach (var agent in agents)
+            {
+                var memory = new List<float>();
+                for (var j = 0; j < memorySize; j++)
+                {
+                    memory.Add(tensorProxy.data[agentIndex, j]);
+                }
+
+                agent.UpdateMemoriesAction(memory);
+                agentIndex++;
+            }
+        }
+    }
 
     /// <summary>
     /// The Applier for the Value Estimate output tensor. Tensor is assumed to contain the
