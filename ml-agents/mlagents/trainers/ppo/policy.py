@@ -171,13 +171,16 @@ class PPOPolicy(TFPolicy):
             run_out["random_normal_epsilon"] = epsilon
         probs = []
         for p in run_out['log_probs']:
+            p = p[:-1]
             exponents = [math.e ** x for x in p]
             probs.append(exponents / sum(exponents))
-        p2 = []
-        for i in range(len(run_out['action'])):
-            for j in range(len(run_out['action'][i])):
-                p2.append((run_out['action'][i][j], probs[i][run_out['action'][i][j]]))
-        print(p2)
+        updated_actions = []
+        for i in range(run_out['action'].shape[0]):
+            # for each agent
+            # Get the first action
+            prob = probs[i][run_out['action'][i][0]]
+            # Replace the second action with the confidence
+            run_out['action'][i][1] = prob * 10000
         return run_out
 
     @timed
