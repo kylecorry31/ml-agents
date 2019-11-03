@@ -3,6 +3,7 @@ import logging
 import numpy as np
 from mlagents.trainers.bc.models import BehavioralCloningModel
 from mlagents.trainers.tf_policy import TFPolicy
+import tensorflow as tf
 
 logger = logging.getLogger("mlagents.trainers")
 
@@ -35,7 +36,7 @@ class BCPolicy(TFPolicy):
         else:
             self._initialize_graph()
 
-        self.inference_dict = {"action": self.model.sample_action}
+        self.inference_dict = {"action": self.model.sample_action, "action_probs": self.model.action_probs }
         self.update_dict = {
             "policy_loss": self.model.loss,
             "update_batch": self.model.update,
@@ -63,6 +64,15 @@ class BCPolicy(TFPolicy):
                 brain_info.memories = self.make_empty_memory(len(brain_info.agents))
             feed_dict[self.model.memory_in] = brain_info.memories
         run_out = self._execute_model(feed_dict, self.inference_dict)
+        # self.sess.run(self.model.action_probs)
+        probs = []
+        for p in run_out['action_probs']:
+            p = p[:-5]
+            probs.append(p)
+        updated_actions = []
+        for i in range(run_out['action'].shape[0]):
+            for j in range(len(probs[i])):
+                run_out['action'][i][j + 1] = probs[i][j] * 10000
         return run_out
 
     def update(self, mini_batch, num_sequences):
