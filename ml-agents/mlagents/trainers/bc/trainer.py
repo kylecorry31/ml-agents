@@ -14,7 +14,6 @@ from mlagents.trainers.trainer import Trainer
 
 logger = logging.getLogger("mlagents.trainers")
 
-
 class BCTrainer(Trainer):
     """The BCTrainer is an implementation of Behavioral Cloning."""
 
@@ -139,6 +138,9 @@ class BCTrainer(Trainer):
             loss = run_out["policy_loss"]
             batch_losses.append(loss)
         if len(batch_losses) > 0:
-            self.stats["Losses/Cloning Loss"].append(np.mean(batch_losses))
+            l = np.mean(batch_losses)
+            self.stats["Losses/Cloning Loss"].append(l)
+            #print("Loss: " + str(l))
+            self.policy.last_loss = l
         else:
             self.stats["Losses/Cloning Loss"].append(0)

@@ -18,6 +18,8 @@ class BCPolicy(TFPolicy):
         """
         super(BCPolicy, self).__init__(seed, brain, trainer_parameters)
 
+        self.last_loss = 0
+
         with self.graph.as_default():
             with self.graph.as_default():
                 self.model = BehavioralCloningModel(
@@ -73,6 +75,7 @@ class BCPolicy(TFPolicy):
         for i in range(run_out['action'].shape[0]):
             for j in range(len(probs[i])):
                 run_out['action'][i][j + 1] = probs[i][j] * 10000
+            run_out['action'][i][-1] = self.last_loss * 100000
         return run_out
 
     def update(self, mini_batch, num_sequences):
